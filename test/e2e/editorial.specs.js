@@ -99,15 +99,11 @@ describe('Book Store E2E Testing', function () {
         });
     });
 
-    it('should create one artist', function () {
-        browser.get('#/book');
-        expect(1).toEqual(1);
-//        element(by.id('create-artist')).click();
-//        browser.sleep(1000);
-//        element(by.id('name')).sendKeys('DaVinci');
-//        browser.sleep(1000);
-//        element(by.id('save-artist')).click();
-//        browser.sleep(1000);
-//        expect(element.all(by.repeater('record in records')).count()).toEqual(1);
+    it('should create one editorial', function () {
+        browser.get('#/editorial');
+        element(by.id('create-editorial')).click();
+        element(by.id('name')).sendKeys('DaVinci');
+        element(by.id('save-editorial')).click();
+        expect(element.all(by.repeater('record in records')).count()).toEqual(1);
     });
 });
