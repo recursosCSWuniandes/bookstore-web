@@ -97,6 +97,12 @@ module.exports = function (grunt) {
                 src: [
                     '<%= meta.src %>/**/*.html' // .html support...
                 ]
+            },
+            test: {
+                src: [
+                    '<%= meta.src %>/**/*.html' // .html support...
+                ],
+                devDependencies: true
             }
         },
         includeSource: {
@@ -287,7 +293,7 @@ module.exports = function (grunt) {
 
     grunt.registerTask('build', [
         'clean',
-        'wiredep',
+        'wiredep:dist',
         'includeSource',
         'useminPrepare',
         'ngtemplates',
@@ -302,7 +308,7 @@ module.exports = function (grunt) {
 
     grunt.registerTask('test', [
         'clean:server',
-        'wiredep',
+        'wiredep:test',
         'includeSource',
         'copy:styles',
         'connect:test',
