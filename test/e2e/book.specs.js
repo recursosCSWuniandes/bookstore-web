@@ -4,7 +4,7 @@ describe('Book Store E2E Testing', function () {
         browser.addMockModule('ngCrudMock', function () {
             var mod = angular.module('ngCrudMock', ['ngMockE2E']);
 
-            mod.constant('ngCrudMock.baseUrl', 'webresources');
+            mod.constant('ngCrudMock.baseUrl', 'api');
 
             mod.value('ngCrudMock.mockRecords', {});
 
