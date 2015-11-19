@@ -1,0 +1,19 @@
+{
+    "name": "BookBasico",
+    "dependencies": {
+        "angular": "^1.4.5",
+        "angular-bootstrap": "^0.13.4",
+        "bootstrap": "^3.3.5",
+        "angular-route": "^1.4.5",
+        "angular-cookies": "^1.4.5"
+    },
+    "overrides": {
+        "bootstrap": {
+            "main": [
+                "less/bootstrap.less",
+                "dist/css/bootstrap.css",
+                "dist/js/bootstrap.js"
+            ]
+        }
+    }
+}
