@@ -5,26 +5,45 @@
         <meta charset="utf-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="viewport" content="width=device-width, initial-scale=1">
-        
+
         <!-- build:css(<%= meta.src %>) styles/vendor.css -->
         <!-- bower:css -->
+        <link rel="stylesheet" href="../bower_components/bootstrap/dist/css/bootstrap.css" />
         <!-- endbower -->
         <!-- endbuild -->
 
         <!-- build:css(<%= meta.src %>) styles/main.css -->
         <!-- include: "type": "js", "files": "<%= meta.includeCssFiles %>" -->
-
+        
         <!-- /include -->
         <!-- endbuild -->
 
         <!-- build:js(<%= meta.src %>) scripts/vendor.js -->
         <!-- bower:js -->
+        <script src="../bower_components/jquery/dist/jquery.js"></script>
+        <script src="../bower_components/angular/angular.js"></script>
+        <script src="../bower_components/angular-bootstrap/ui-bootstrap-tpls.js"></script>
+        <script src="../bower_components/bootstrap/dist/js/bootstrap.js"></script>
+        <script src="../bower_components/angular-route/angular-route.js"></script>
+        <script src="../bower_components/angular-cookies/angular-cookies.js"></script>
         <!-- endbower -->
         <!-- endbuild -->
         <script src="https://rawgit.com/recursosCSWuniandes/ng-crud-auth/master/dist/ngcrud-auth.min.js" type="text/javascript"></script>
 
         <!-- build:js(<%= meta.src %>) scripts/scripts.js -->
         <!-- include: "type": "js", "files": "<%= meta.includeJsFiles %>" -->
+        <script src="src/app.js"></script>
+        <script src="src/modules/author/author.mod.js"></script>
+        <script src="src/modules/book/book.mod.js"></script>
+        <script src="src/modules/editorial/editorial.mod.js"></script>
+        <script src="src/modules/review/review.mod.js"></script>
+        <script src="src/modules/author/author.ctrl.js"></script>
+        <script src="src/modules/author/author.svc.js"></script>
+        <script src="src/modules/book/book.ctrl.js"></script>
+        <script src="src/modules/book/book.svc.js"></script>
+        <script src="src/modules/editorial/editorial.ctrl.js"></script>
+        <script src="src/modules/editorial/editorial.svc.js"></script>
+        <script src="src/modules/review/review.ctrl.js"></script>
         <!-- /include -->
         <!-- endbuild -->
     </head>
