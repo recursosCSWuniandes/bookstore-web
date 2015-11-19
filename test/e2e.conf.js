@@ -4,7 +4,7 @@ exports.config = {
         'e2e/*.js'
     ],
     capabilities: {
-        'browserName': 'chrome'
+        'browserName': 'firefox'
     },
     chromeOnly: true,
     baseUrl: 'http://localhost:9001/',
