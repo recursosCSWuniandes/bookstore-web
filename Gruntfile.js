@@ -7,7 +7,8 @@ module.exports = function (grunt) {
     require('jit-grunt')(grunt, {
         useminPrepare: 'grunt-usemin',
         ngtemplates: 'grunt-angular-templates',
-        protractor: 'grunt-protractor-runner'
+        protractor: 'grunt-protractor-runner',
+        sonarRunner: 'grunt-sonar-runner'
     });
 
     var appConfig = {
@@ -262,6 +263,22 @@ module.exports = function (grunt) {
             test: {
                 options: {
                     configFile: "test/e2e.conf.js"
+                }
+            }
+        },
+        sonarRunner: {
+            analysis: {
+                options: {
+                    sonar: {
+                        host: {
+                            url: 'http://157.253.238.75:9000'
+                        },
+                        projectKey: '<%= pkg.name %>',
+                        projectName: '<%= pkg.description %>',
+                        projectVersion: '<%= pkg.version %>',
+                        sources: '<%= meta.src %>',
+                        sourceEncoding: 'UTF-8'
+                    }
                 }
             }
         }
