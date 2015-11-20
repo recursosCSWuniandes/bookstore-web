@@ -281,6 +281,32 @@ module.exports = function (grunt) {
                     }
                 }
             }
+        },
+        jshint: {
+            options: {
+                reporter: require('jshint-stylish'),
+                curly: true,
+                latedef: true,
+                eqeqeq: true,
+                eqnull: true,
+                bitwise: true,
+                browser: true,
+                noarg: true,
+                node: true,
+                undef: true,
+                unused: true,
+                forin: true,
+                evil: true,
+                globals: {
+                    angular: false
+                }
+            },
+            src: {
+                src: [
+                    'Gruntfile.js',
+                    '<%= meta.src %>/**/*.js'
+                ]
+            }
         }
     });
 
@@ -290,6 +316,7 @@ module.exports = function (grunt) {
         }
 
         grunt.task.run([
+            'jshint',
             'clean:server',
             'wiredep',
             'includeSource',
@@ -300,6 +327,7 @@ module.exports = function (grunt) {
     });
 
     grunt.registerTask('build', [
+        'jshint',
         'clean',
         'wiredep:dist',
         'includeSource',
@@ -315,6 +343,7 @@ module.exports = function (grunt) {
     ]);
 
     grunt.registerTask('test', [
+        'jshint',
         'clean:server',
         'wiredep:test',
         'includeSource',

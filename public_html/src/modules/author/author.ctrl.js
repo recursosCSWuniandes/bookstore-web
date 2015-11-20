@@ -5,7 +5,7 @@
             $scope.currentRecord = {};
             $scope.records = [];
             $scope.alerts = [];
-            
+
             $scope.today = function () {
                 $scope.value = new Date();
             };
@@ -39,6 +39,7 @@
                 showMessage(msg, 'danger');
             };
 
+            var self = this;
             function responseError(response) {
                 self.showError(response.data);
             }
@@ -51,7 +52,6 @@
                 $scope.tab = tab;
             };
 
-            var self = this;
             this.createRecord = function () {
                 $scope.$broadcast('pre-create', $scope.currentRecord);
                 this.editMode = true;

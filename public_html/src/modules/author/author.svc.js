@@ -76,7 +76,7 @@
             this.getBooks = function (id) {
                 return $http.get(context + "/" + id + "/books");
             };
-            
+
             /**
              * Hace una petición DELETE a /authors/:id/books/:id para remover
              * un author de un author

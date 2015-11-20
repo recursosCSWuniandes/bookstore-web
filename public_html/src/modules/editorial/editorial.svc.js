@@ -24,7 +24,7 @@
             this.fetchRecord = function (id) {
                 return $http.get(context + "/" + id);
             };
-            
+
             /**
              * Guardar un registro de editorials.
              * Si currentRecord tiene la propiedad id, hace un PUT a /editorials/:id con los
@@ -42,7 +42,7 @@
                     return $http.post(context, currentRecord);
                 }
             };
-            
+
             /**
              * Hace una petición DELETE a /editorials/:id para eliminar un editorial
              * @param {number} id identificador de la instancia de editorial a eliminar
@@ -52,7 +52,7 @@
             this.deleteRecord = function (id) {
                 return $http.delete(context + "/" + id);
             };
-            
+
             /**
              * Hace una petición PUT a /editorials/:id/books para reemplazar los
              * book asociados a un editorial
@@ -75,7 +75,7 @@
             this.getBooks = function (id) {
                 return $http.get(context + "/" + id + "/books");
             };
-            
+
             /**
              * Hace una petición DELETE a /editorials/:id/books/:id para remover
              * un book de un editorial
@@ -87,7 +87,7 @@
             this.removeBook = function (editorialId, bookId) {
                 return $http.delete(context + "/" + editorialId + "/books/" + bookId);
             };
-            
+
             /**
              * Hace una petición GET a /editorials/:id/authors para obtener la colección
              * de author asociados a un editorial

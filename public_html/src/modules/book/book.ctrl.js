@@ -43,6 +43,7 @@
                 showMessage(msg, 'success');
             };
 
+            var self = this;
             function responseError(response) {
                 self.showError(response.data);
             }
@@ -55,7 +56,6 @@
                 $scope.tab = tab;
             };
 
-            var self = this;
             this.createRecord = function () {
                 $scope.$broadcast('pre-create', $scope.currentRecord);
                 this.editMode = true;
@@ -78,7 +78,7 @@
                     $scope.records = response.data;
                     $scope.currentRecord = {};
                     self.editMode = false;
-                    ng.forEach(response.data, function (value, key) {
+                    ng.forEach(response.data, function (value) {
                         svc.getAuthors(value.id).then(function (response) {
                             value.authors = response.data;
                         });
