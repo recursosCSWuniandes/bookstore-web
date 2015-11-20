@@ -285,6 +285,7 @@ module.exports = function (grunt) {
         jshint: {
             options: {
                 reporter: require('jshint-stylish'),
+                force: false, //set to true to report JSHint errors but not fail the task
                 curly: true,
                 latedef: true,
                 eqeqeq: true,
@@ -307,6 +308,14 @@ module.exports = function (grunt) {
                     '<%= meta.src %>/**/*.js'
                 ]
             }
+        },
+        jscs: {
+            src: "<%= meta.src %>/**/*.js",
+            options: {
+                force: true,
+                preset: 'idiomatic',
+                reporter: 'inline'
+            }
         }
     });
 
@@ -317,6 +326,7 @@ module.exports = function (grunt) {
 
         grunt.task.run([
             'jshint',
+            'jscs',
             'clean:server',
             'wiredep',
             'includeSource',
@@ -328,6 +338,7 @@ module.exports = function (grunt) {
 
     grunt.registerTask('build', [
         'jshint',
+        'jscs',
         'clean',
         'wiredep:dist',
         'includeSource',
@@ -344,6 +355,7 @@ module.exports = function (grunt) {
 
     grunt.registerTask('test', [
         'jshint',
+        'jscs',
         'clean:server',
         'wiredep:test',
         'includeSource',

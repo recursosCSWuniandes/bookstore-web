@@ -17,6 +17,7 @@
     "grunt-contrib-watch": "^0.6.1",
     "grunt-filerev": "^2.1.2",
     "grunt-include-source": "*",
+    "grunt-jscs": "^2.3.0",
     "grunt-protractor-runner": "*",
     "grunt-sonar-runner": "^2.4.4",
     "grunt-usemin": "^3.1.1",
