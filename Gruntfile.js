@@ -313,8 +313,10 @@ module.exports = function (grunt) {
             src: "<%= meta.src %>/**/*.js",
             options: {
                 force: true,
-                preset: 'idiomatic',
-                reporter: 'inline'
+                preset: 'crockford',
+                reporter: 'inline',
+                fix: true,
+                verbose: true
             }
         }
     });

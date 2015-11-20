@@ -1,5 +1,5 @@
 (function (ng) {
-    var mod = ng.module('editorialModule', ['ui.bootstrap']);
+    var mod = ng.module("editorialModule", ["ui.bootstrap"]);
 
-    mod.constant('editorialContext', 'api/editorials');
+    mod.constant("editorialContext", "api/editorials");
 })(window.angular);

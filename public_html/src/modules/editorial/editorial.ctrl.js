@@ -1,235 +1,235 @@
 (function (ng) {
-    var mod = ng.module('editorialModule');
+    var mod = ng.module("editorialModule");
 
-    mod.controller('editorialCtrl', ['$scope', 'editorialService', function ($scope, svc) {
+    mod.controller("editorialCtrl", ["$scope", "editorialService", function ($scope, svc) {
+        $scope.currentRecord = {};
+        $scope.records = [];
+        $scope.alerts = [];
+
+        //Alertas
+        this.closeAlert = function (index) {
+            $scope.alerts.splice(index, 1);
+        };
+
+        function showMessage(msg, type) {
+            var types = ["info", "danger", "warning", "success"];
+            if (types.some(function (rc) {
+                return type === rc;
+            })) {
+                $scope.alerts.push({ type: type, msg: msg });
+            }
+        }
+
+        this.showError = function (msg) {
+            showMessage(msg, "danger");
+        };
+
+        var self = this;
+        function responseError(response) {
+            self.showError(response.data);
+        }
+
+        //Variables para el controlador
+        this.readOnly = false;
+        this.editMode = false;
+
+        this.changeTab = function (tab) {
+            $scope.tab = tab;
+        };
+
+        this.createRecord = function () {
+            $scope.$broadcast("pre-create", $scope.currentRecord);
+            this.editMode = true;
             $scope.currentRecord = {};
-            $scope.records = [];
-            $scope.alerts = [];
+            $scope.$broadcast("post-create", $scope.currentRecord);
+        };
 
-            //Alertas
-            this.closeAlert = function (index) {
-                $scope.alerts.splice(index, 1);
-            };
+        this.editRecord = function (record) {
+            $scope.$broadcast("pre-edit", $scope.currentRecord);
+            return svc.fetchRecord(record.id).then(function (response) {
+                $scope.currentRecord = response.data;
+                self.editMode = true;
+                $scope.$broadcast("post-edit", $scope.currentRecord);
+                return response;
+            }, responseError);
+        };
 
-            function showMessage(msg, type) {
-                var types = ['info', 'danger', 'warning', 'success'];
-                if (types.some(function (rc) {
-                    return type === rc;
-                })) {
-                    $scope.alerts.push({type: type, msg: msg});
-                }
-            }
-
-            this.showError = function (msg) {
-                showMessage(msg, 'danger');
-            };
-
-            var self = this;
-            function responseError(response) {
-                self.showError(response.data);
-            }
-
-            //Variables para el controlador
-            this.readOnly = false;
-            this.editMode = false;
-
-            this.changeTab = function (tab) {
-                $scope.tab = tab;
-            };
-
-            this.createRecord = function () {
-                $scope.$broadcast('pre-create', $scope.currentRecord);
-                this.editMode = true;
+        this.fetchRecords = function () {
+            return svc.fetchRecords().then(function (response) {
+                $scope.records = response.data;
                 $scope.currentRecord = {};
-                $scope.$broadcast('post-create', $scope.currentRecord);
-            };
+                self.editMode = false;
+                return response;
+            }, responseError);
+        };
+        this.saveRecord = function () {
+            return svc.saveRecord($scope.currentRecord).then(function () {
+                self.fetchRecords();
+            }, responseError);
+        };
+        this.deleteRecord = function (record) {
+            return svc.deleteRecord(record.id).then(function () {
+                self.fetchRecords();
+            }, responseError);
+        };
 
-            this.editRecord = function (record) {
-                $scope.$broadcast('pre-edit', $scope.currentRecord);
-                return svc.fetchRecord(record.id).then(function (response) {
-                    $scope.currentRecord = response.data;
-                    self.editMode = true;
-                    $scope.$broadcast('post-edit', $scope.currentRecord);
-                    return response;
-                }, responseError);
-            };
+        this.fetchRecords();
+    }]);
 
-            this.fetchRecords = function () {
-                return svc.fetchRecords().then(function (response) {
-                    $scope.records = response.data;
-                    $scope.currentRecord = {};
-                    self.editMode = false;
-                    return response;
-                }, responseError);
-            };
-            this.saveRecord = function () {
-                return svc.saveRecord($scope.currentRecord).then(function () {
-                    self.fetchRecords();
-                }, responseError);
-            };
-            this.deleteRecord = function (record) {
-                return svc.deleteRecord(record.id).then(function () {
-                    self.fetchRecords();
-                }, responseError);
-            };
+    mod.controller("editorialBooksCtrl", ["$scope", "bookService", "$modal", "editorialService", function ($scope, svc, $modal, editorialSvc) {
+        $scope.currentRecord = {};
+        $scope.records = [];
+        $scope.refName = "books";
+        $scope.alerts = [];
 
-            this.fetchRecords();
-        }]);
+        //Alertas
+        this.closeAlert = function (index) {
+            $scope.alerts.splice(index, 1);
+        };
 
-    mod.controller('editorialBooksCtrl', ['$scope', 'bookService', '$modal', 'editorialService', function ($scope, svc, $modal, editorialSvc) {
-            $scope.currentRecord = {};
+        function showMessage(msg, type) {
+            var types = ["info", "danger", "warning", "success"];
+            if (types.some(function (rc) {
+                return type === rc;
+            })) {
+                $scope.alerts.push({ type: type, msg: msg });
+            }
+        }
+
+        this.showError = function (msg) {
+            showMessage(msg, "danger");
+        };
+
+        var self = this;
+        function responseError(response) {
+            self.showError(response.data);
+        }
+
+        //Variables para el controlador
+        this.readOnly = false;
+        this.editMode = false;
+
+        //Escucha de evento cuando se selecciona un registro maestro
+        function onCreateOrEdit(event, args) {
+            var childName = "books";
+            if (args[ childName ] === undefined) {
+                args[ childName ] = [];
+            }
             $scope.records = [];
-            $scope.refName = 'books';
-            $scope.alerts = [];
+            $scope.refId = args.id;
+            editorialSvc.getBooks(args.id).then(function (response) {
+                $scope.records = response.data;
+            }, responseError);
+        }
 
-            //Alertas
-            this.closeAlert = function (index) {
-                $scope.alerts.splice(index, 1);
-            };
+        $scope.$on("post-create", onCreateOrEdit);
+        $scope.$on("post-edit", onCreateOrEdit);
 
-            function showMessage(msg, type) {
-                var types = ['info', 'danger', 'warning', 'success'];
-                if (types.some(function (rc) {
-                    return type === rc;
-                })) {
-                    $scope.alerts.push({type: type, msg: msg});
-                }
-            }
+        this.removeBook = function (index) {
+            editorialSvc.removeBook($scope.refId, $scope.records[ index ].id).then(function () {
+                $scope.records.splice(index, 1);
+            }, responseError);
+        };
 
-            this.showError = function (msg) {
-                showMessage(msg, 'danger');
-            };
+        this.showList = function () {
+            var modal = $modal.open({
+                animation: true,
+                templateUrl: "src/modules/editorial/bookModal.tpl.html",
+                controller: ["$scope", "$modalInstance", "items", "currentItems", function ($scope, $modalInstance, items, currentItems) {
+                    $scope.records = items.data;
+                    $scope.allChecked = false;
 
-            var self = this;
-            function responseError(response) {
-                self.showError(response.data);
-            }
-
-            //Variables para el controlador
-            this.readOnly = false;
-            this.editMode = false;
-
-            //Escucha de evento cuando se selecciona un registro maestro
-            function onCreateOrEdit(event, args) {
-                var childName = 'books';
-                if (args[childName] === undefined) {
-                    args[childName] = [];
-                }
-                $scope.records = [];
-                $scope.refId = args.id;
-                editorialSvc.getBooks(args.id).then(function (response) {
-                    $scope.records = response.data;
-                }, responseError);
-            }
-
-            $scope.$on('post-create', onCreateOrEdit);
-            $scope.$on('post-edit', onCreateOrEdit);
-
-            this.removeBook = function (index) {
-                editorialSvc.removeBook($scope.refId, $scope.records[index].id).then(function () {
-                    $scope.records.splice(index, 1);
-                }, responseError);
-            };
-
-            this.showList = function () {
-                var modal = $modal.open({
-                    animation: true,
-                    templateUrl: 'src/modules/editorial/bookModal.tpl.html',
-                    controller: ['$scope', '$modalInstance', 'items', 'currentItems', function ($scope, $modalInstance, items, currentItems) {
-                            $scope.records = items.data;
-                            $scope.allChecked = false;
-
-                            function loadSelected(list, selected) {
-                                ng.forEach(selected, function (selectedValue) {
-                                    ng.forEach(list, function (listValue) {
-                                        if (listValue.id === selectedValue.id) {
-                                            listValue.selected = true;
-                                        }
-                                    });
-                                });
-                            }
-
-                            $scope.checkAll = function (flag) {
-                                this.records.forEach(function (item) {
-                                    item.selected = flag;
-                                });
-                            };
-
-                            loadSelected($scope.records, currentItems);
-
-                            function getSelectedItems() {
-                                return $scope.records.filter(function (item) {
-                                    return !!item.selected;
-                                });
-                            }
-
-                            $scope.ok = function () {
-                                $modalInstance.close(getSelectedItems());
-                            };
-
-                            $scope.cancel = function () {
-                                $modalInstance.dismiss('cancel');
-                            };
-                        }],
-                    resolve: {
-                        items: function () {
-                            return svc.fetchRecords();
-                        },
-                        currentItems: function () {
-                            return $scope.records;
-                        }
+                    function loadSelected(list, selected) {
+                        ng.forEach(selected, function (selectedValue) {
+                            ng.forEach(list, function (listValue) {
+                                if (listValue.id === selectedValue.id) {
+                                    listValue.selected = true;
+                                }
+                            });
+                        });
                     }
-                });
-                modal.result.then(function (data) {
-                    editorialSvc.replaceBooks($scope.refId, data).then(function (response) {
-                        $scope.records.splice(0, $scope.records.length);
-                        $scope.records.push.apply($scope.records, response.data);
-                    }, responseError);
-                });
-            };
-        }]);
 
-    mod.controller('editorialAuthorsCtrl', ['$scope', 'editorialService', function ($scope, editorialSvc) {
-            $scope.currentRecord = {};
-            $scope.records = [];
-            $scope.alerts = [];
+                    $scope.checkAll = function (flag) {
+                        this.records.forEach(function (item) {
+                            item.selected = flag;
+                        });
+                    };
 
-            //Alertas
-            this.closeAlert = function (index) {
-                $scope.alerts.splice(index, 1);
-            };
+                    loadSelected($scope.records, currentItems);
 
-            function showMessage(msg, type) {
-                var types = ['info', 'danger', 'warning', 'success'];
-                if (types.some(function (rc) {
-                    return type === rc;
-                })) {
-                    $scope.alerts.push({type: type, msg: msg});
+                    function getSelectedItems() {
+                        return $scope.records.filter(function (item) {
+                            return !!item.selected;
+                        });
+                    }
+
+                    $scope.ok = function () {
+                        $modalInstance.close(getSelectedItems());
+                    };
+
+                    $scope.cancel = function () {
+                        $modalInstance.dismiss("cancel");
+                    };
+                }],
+                resolve: {
+                    items: function () {
+                        return svc.fetchRecords();
+                    },
+                    currentItems: function () {
+                        return $scope.records;
+                    }
                 }
-            }
-
-            this.showError = function (msg) {
-                showMessage(msg, 'danger');
-            };
-
-            var self = this;
-            function responseError(response) {
-                self.showError(response.data);
-            }
-
-            //Variables para el controlador
-            this.editMode = false;
-
-            //Escucha de evento cuando se selecciona un registro maestro
-            function onCreateOrEdit(event, args) {
-                $scope.records = [];
-                $scope.refId = args.id;
-                editorialSvc.getAuthors(args.id).then(function (response) {
-                    $scope.records = response.data;
+            });
+            modal.result.then(function (data) {
+                editorialSvc.replaceBooks($scope.refId, data).then(function (response) {
+                    $scope.records.splice(0, $scope.records.length);
+                    $scope.records.push.apply($scope.records, response.data);
                 }, responseError);
-            }
+            });
+        };
+    }]);
 
-            $scope.$on('post-create', onCreateOrEdit);
-            $scope.$on('post-edit', onCreateOrEdit);
-        }]);
+    mod.controller("editorialAuthorsCtrl", ["$scope", "editorialService", function ($scope, editorialSvc) {
+        $scope.currentRecord = {};
+        $scope.records = [];
+        $scope.alerts = [];
+
+        //Alertas
+        this.closeAlert = function (index) {
+            $scope.alerts.splice(index, 1);
+        };
+
+        function showMessage(msg, type) {
+            var types = ["info", "danger", "warning", "success"];
+            if (types.some(function (rc) {
+                return type === rc;
+            })) {
+                $scope.alerts.push({ type: type, msg: msg });
+            }
+        }
+
+        this.showError = function (msg) {
+            showMessage(msg, "danger");
+        };
+
+        var self = this;
+        function responseError(response) {
+            self.showError(response.data);
+        }
+
+        //Variables para el controlador
+        this.editMode = false;
+
+        //Escucha de evento cuando se selecciona un registro maestro
+        function onCreateOrEdit(event, args) {
+            $scope.records = [];
+            $scope.refId = args.id;
+            editorialSvc.getAuthors(args.id).then(function (response) {
+                $scope.records = response.data;
+            }, responseError);
+        }
+
+        $scope.$on("post-create", onCreateOrEdit);
+        $scope.$on("post-edit", onCreateOrEdit);
+    }]);
 })(window.angular);

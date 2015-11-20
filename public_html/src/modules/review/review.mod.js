@@ -1,3 +1,3 @@
 (function (ng) {
-    ng.module('reviewModule', ['ui.bootstrap']);
+    ng.module("reviewModule", ["ui.bootstrap"]);
 })(window.angular);
