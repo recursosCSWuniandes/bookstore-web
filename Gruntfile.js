@@ -56,7 +56,7 @@ module.exports = function (grunt) {
                             '.htaccess',
                             '*.html',
                             'images/{,*/}*.{webp}',
-                            'styles/fonts/{,*/}*.*'
+                            'fonts/{,*/}*.*'
                         ]
                     }, {
                         expand: true,
@@ -72,9 +72,9 @@ module.exports = function (grunt) {
             },
             styles: {
                 expand: true,
-                cwd: '<%= meta.src %>/styles',
+                cwd: '<%= meta.src %>',
                 dest: '<%= meta.tmp %>/styles/',
-                src: '{,*/}*.css'
+                src: '**/*.css'
             }
         },
         ngtemplates: {
@@ -165,10 +165,6 @@ module.exports = function (grunt) {
                 files: ['test/spec/{,*/}*.js'],
                 tasks: ['newer:jshint:test', 'karma']
             },
-            styles: {
-                files: ['<%= meta.src %>/styles/{,*/}*.css'],
-                tasks: ['newer:copy:styles', 'autoprefixer']
-            },
             gruntfile: {
                 files: ['Gruntfile.js']
             },
@@ -178,7 +174,7 @@ module.exports = function (grunt) {
                 },
                 files: [
                     '<%= meta.src %>/{,*/}*.html',
-                    '.tmp/styles/{,*/}*.css',
+                    '<%= meta.tmp %>/styles/{,*/}*.css',
                     '<%= meta.src %>/images/{,*/}*.{png,jpg,jpeg,gif,webp,svg}'
                 ]
             }
@@ -201,8 +197,8 @@ module.exports = function (grunt) {
                                     connect.static('./bower_components')
                                     ),
                             connect().use(
-                                    '/<%= meta.tmp %>src/styles',
-                                    connect.static('./<%= meta.src %>/styles')
+                                    '/<%= meta.tmp %>/styles',
+                                    connect.static('./<%= meta.tmp %>/styles')
                                     ),
                             connect.static(appConfig.src)
                         ];
@@ -321,22 +317,18 @@ module.exports = function (grunt) {
         }
     });
 
-    grunt.registerTask('run', 'Compile then start a connect web server', function (target) {
-        if (target === 'dist') {
-            return grunt.task.run(['build', 'connect:dist:keepalive']);
-        }
+    grunt.registerTask('run', ['build', 'connect:dist:keepalive']);
 
-        grunt.task.run([
-            'jshint',
-            'jscs',
-            'clean:server',
-            'wiredep',
-            'includeSource',
-            'copy:styles',
-            'connect:livereload',
-            'watch'
-        ]);
-    });
+    grunt.registerTask('rundev', [
+        'jshint',
+        'jscs',
+        'clean:server',
+        'wiredep',
+        'includeSource',
+        'copy:styles',
+        'connect:livereload',
+        'watch'
+    ]);
 
     grunt.registerTask('build', [
         'jshint',
