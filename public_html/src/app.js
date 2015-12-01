@@ -29,7 +29,7 @@
         }]);
     mainApp.config(["authServiceProvider", function (auth) {
             auth.setValues({
-                apiUrl: "api/users/",
+                apiUrl: "http://localhost:8080/BookBasico.api/api/users/",
                 successPath: "/catalog",
                 loginPath: "/login",
                 registerPath: "/register",
