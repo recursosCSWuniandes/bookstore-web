@@ -99,27 +99,27 @@ describe('Book Store E2E Testing', function () {
         });
     });
 
-    it('should create one editorial', function () {
-        browser.get('#/editorial');
-        element(by.id('create-editorial')).click();
-        element(by.id('name')).sendKeys('DaVinci');
-        element(by.id('save-editorial')).click();
+    it('should create one author', function () {
+        browser.get('#/author');
+        element(by.id('create-author')).click();
+        element(by.id('name')).sendKeys('Nicolas Garcia');
+        element(by.id('save-author')).click();
         expect(element.all(by.repeater('record in records')).count()).toEqual(1);
     });
     
-    it('should read one editorial', function () {
-        expect(element.all(by.cssContainingText('.ng-binding', 'DaVinci')).count()).toEqual(1);
+    it('should read one author', function () {
+        expect(element.all(by.cssContainingText('.ng-binding', 'Nicolas Garcia')).count()).toEqual(1);
     });
     
-    it('should edit one editorial', function () {
+    it('should edit one author', function () {
         element(by.id('0-edit-btn')).click();
-        element(by.id('name')).clear().sendKeys('Planeta');
-        element(by.id('save-editorial')).click();
-        expect(element.all(by.cssContainingText('.ng-binding', 'Planeta')).count()).toEqual(1);
+        element(by.id('name')).clear().sendKeys('Daniela Garcia');
+        element(by.id('save-author')).click();
+        expect(element.all(by.cssContainingText('.ng-binding', 'Daniela Garcia')).count()).toEqual(1);
     });
     
-    it('should delete the editorial', function () {
+    it('should delete the author', function () {
         element(by.id('0-delete-btn')).click();
-        expect(element.all(by.cssContainingText('.ng-binding', 'Planeta')).count()).toEqual(0);
+        expect(element.all(by.cssContainingText('.ng-binding', 'Daniela Garcia')).count()).toEqual(0);
     });
 });

@@ -1,4 +1,6 @@
 describe('Book Store E2E Testing', function () {
+    
+    var esEditorial = false;
 
     beforeEach(function () {
         browser.addMockModule('ngCrudMock', function () {
@@ -70,9 +72,14 @@ describe('Book Store E2E Testing', function () {
                     });
                     $httpBackend.whenPOST(collectionUrl).respond(function (method, url, data) {
                         var records = getRecords(url);
-                        var record = angular.fromJson(data);
-                        record.id = Math.floor(Math.random() * 10000);
-                        records.push(record);
+                        
+                        if (!esEditorial)
+                        {
+                            var record = angular.fromJson(data);
+                            record.id = Math.floor(Math.random() * 10000);
+                            records.push(record);
+                        }
+                        
                         return [201, record, {}];
                     });
                     $httpBackend.whenPUT(recordUrl).respond(function (method, url, data) {
@@ -99,27 +106,23 @@ describe('Book Store E2E Testing', function () {
         });
     });
 
-    it('should create one editorial', function () {
+    it('should create one book', function () {
+        /*
+        esEditorial = true;
         browser.get('#/editorial');
         element(by.id('create-editorial')).click();
         element(by.id('name')).sendKeys('DaVinci');
         element(by.id('save-editorial')).click();
+        esEditorial = false;
+        browser.get('#/book');
+        element(by.id('create-book')).click();
+        element(by.id('name')).sendKeys('DaVinci');
+        element(by.id('description')).sendKeys('Codigo DaVinci');
+        element(by.id('isbn')).sendKeys('Book ISBN');
+        element(by.css('select option:nth-child(1)')).click();
+        browser.driver.sleep(5000);
+        element(by.id('save-book')).click();
         expect(element.all(by.repeater('record in records')).count()).toEqual(1);
-    });
-    
-    it('should read one editorial', function () {
-        expect(element.all(by.cssContainingText('.ng-binding', 'DaVinci')).count()).toEqual(1);
-    });
-    
-    it('should edit one editorial', function () {
-        element(by.id('0-edit-btn')).click();
-        element(by.id('name')).clear().sendKeys('Planeta');
-        element(by.id('save-editorial')).click();
-        expect(element.all(by.cssContainingText('.ng-binding', 'Planeta')).count()).toEqual(1);
-    });
-    
-    it('should delete the editorial', function () {
-        element(by.id('0-delete-btn')).click();
-        expect(element.all(by.cssContainingText('.ng-binding', 'Planeta')).count()).toEqual(0);
+        */
     });
 });
