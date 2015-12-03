@@ -1,7 +1,5 @@
 describe('Book Store E2E Testing', function () {
     
-    var esEditorial = false;
-
     beforeEach(function () {
         browser.addMockModule('ngCrudMock', function () {
             var mod = angular.module('ngCrudMock', ['ngMockE2E']);
@@ -10,7 +8,8 @@ describe('Book Store E2E Testing', function () {
 
             mod.value('ngCrudMock.mockRecords', {});
 
-            mod.run(['$httpBackend', 'ngCrudMock.mockRecords', 'ngCrudMock.baseUrl', function ($httpBackend, mockRecords, baseUrl) {
+            mod.run(['$httpBackend', 'ngCrudMock.mockRecords', 'ngCrudMock.baseUrl', function ($httpBackend, mockRecords, baseUrl) {                    
+                    
                     function getQueryParams(url) {
                         var vars = {}, hash;
                         var hashes = url.slice(url.indexOf('?') + 1).split('&');
@@ -32,6 +31,23 @@ describe('Book Store E2E Testing', function () {
                         var entity = getEntityName(url);
                         if (mockRecords[entity] === undefined) {
                             mockRecords[entity] = [];
+                            
+                            console.log('Entity: ' + entity);
+                            
+                            // Debemos crear una editorial por defecto
+                            if (entity == "editorials")
+                            {
+                                var record = JSON.parse('{ "name": "Planeta" }');
+                                record.id = 100;
+                                mockRecords[entity].push(record);
+                            }
+                            // Tambien un author para la seleccion
+                            else if (entity == "authors")
+                            {
+                                var record = JSON.parse('{ "name": "Dan Brown", "BirthDate:" "27/08/2012" }');
+                                record.id = 100;
+                                mockRecords[entity].push(record);
+                            }
                         }
                         return mockRecords[entity];
                     }
@@ -72,14 +88,9 @@ describe('Book Store E2E Testing', function () {
                     });
                     $httpBackend.whenPOST(collectionUrl).respond(function (method, url, data) {
                         var records = getRecords(url);
-                        
-                        if (!esEditorial)
-                        {
-                            var record = angular.fromJson(data);
-                            record.id = Math.floor(Math.random() * 10000);
-                            records.push(record);
-                        }
-                        
+                        var record = angular.fromJson(data);
+                        record.id = Math.floor(Math.random() * 10000);
+                        records.push(record);
                         return [201, record, {}];
                     });
                     $httpBackend.whenPUT(recordUrl).respond(function (method, url, data) {
@@ -107,22 +118,49 @@ describe('Book Store E2E Testing', function () {
     });
 
     it('should create one book', function () {
-        /*
-        esEditorial = true;
-        browser.get('#/editorial');
-        element(by.id('create-editorial')).click();
-        element(by.id('name')).sendKeys('DaVinci');
-        element(by.id('save-editorial')).click();
-        esEditorial = false;
         browser.get('#/book');
         element(by.id('create-book')).click();
         element(by.id('name')).sendKeys('DaVinci');
         element(by.id('description')).sendKeys('Codigo DaVinci');
         element(by.id('isbn')).sendKeys('Book ISBN');
-        element(by.css('select option:nth-child(1)')).click();
-        browser.driver.sleep(5000);
+        element(by.id('imageurl')).sendKeys('http://www.librosyliteratura.es/wp-content/uploads/2013/06/El-Codigo-Da-Vinci.jpg');
+        
+        var select = element(by.id('editorial'));
+        select.$('[value="100"]').click();
+        
         element(by.id('save-book')).click();
         expect(element.all(by.repeater('record in records')).count()).toEqual(1);
-        */
+    });
+    
+    it('should read one book', function () {
+        expect(element.all(by.cssContainingText('.ng-binding', 'Name: DaVinci')).count()).toEqual(1);
+        expect(element.all(by.cssContainingText('.ng-binding', 'Description: Codigo DaVinci')).count()).toEqual(1);
+        expect(element.all(by.cssContainingText('.ng-binding', 'ISBN: Book ISBN')).count()).toEqual(1);
+        expect(element.all(by.cssContainingText('.ng-binding', 'Editorial: Planeta')).count()).toEqual(1);
+    });
+    
+    it('should edit one book', function () {
+        element(by.id('0-edit-btn')).click();
+        element(by.id('name')).clear().sendKeys('El diario de Ana Frank');
+        element(by.id('description')).clear().sendKeys('La vida de Ana Frank');
+        element(by.id('isbn')).clear().sendKeys('ANA ISBN');
+        element(by.id('save-book')).click();
+        
+        expect(element.all(by.cssContainingText('.ng-binding', 'Name: El diario de Ana Frank')).count()).toEqual(1);
+        expect(element.all(by.cssContainingText('.ng-binding', 'Description: La vida de Ana Frank')).count()).toEqual(1);
+        expect(element.all(by.cssContainingText('.ng-binding', 'ISBN: ANA ISBN')).count()).toEqual(1);
+    });
+    
+    /*it('should add an author to the book', function () {
+        element(by.id('select-author')).click();
+        browser.driver.sleep(30000);
+        element(by.model('record.selected')).click();
+        element(by.css('[ng-click="ok()"]')).click();
+        expect(element.all(by.cssContainingText('.ng-binding', 'Autores actualizados')).count()).toEqual(0);
+    });*/
+    
+    it('should delete the book', function () {
+        element(by.id('0-delete-btn')).click();
+        expect(element.all(by.cssContainingText('.ng-binding', 'Name: El diario de Ana Frank')).count()).toEqual(0);
     });
 });
