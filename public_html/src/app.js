@@ -42,12 +42,9 @@
                 logoutURL: "logout",
                 nameCookie: "userCookie"
             });
-            //Registro de menús personalizados
-            auth.setRoles({'user': [{id: 'registeredUsers', label: 'user', icon: 'list-alt', url: '#/author'}, {id: 'indexBook', label: 'book', icon: 'list-alt', url: '#/book'}],
-                'provider': [{id: 'registeredProviders', label: 'provider', icon: 'inbox', url: '#/editorial'}]});
         }]);
 
-    mainApp.config(['$logProvider', function ($logProvider) {
+    mainApp.config(['$logProvider', function($logProvider){
             $logProvider.debugEnabled(true);
-        }]);
+    }]);
 })(window.angular);
