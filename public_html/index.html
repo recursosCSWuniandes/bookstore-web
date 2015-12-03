@@ -15,7 +15,9 @@
         <!-- build:css(<%= meta.src %>) styles/main.css -->
         <!-- include: "type": "css", "files": "<%= meta.includeCssFiles %>" -->
 
-       
+
+
+  
         <!-- /include -->
         <!-- endbuild -->
 
@@ -25,11 +27,12 @@
         <script src="../bower_components/angular/angular.js"></script>
         <script src="../bower_components/angular-bootstrap/ui-bootstrap-tpls.js"></script>
         <script src="../bower_components/bootstrap/dist/js/bootstrap.js"></script>
-        <script src="../bower_components/angular-route/angular-route.js"></script>
         <script src="../bower_components/ngstorage/ngStorage.js"></script>
         <script src="../bower_components/checklist-model/checklist-model.js"></script>
+        <script src="../bower_components/angular-route/angular-route.js"></script>
         <script src="../bower_components/angular-cookies/angular-cookies.js"></script>
         <script src="../bower_components/csw-ng-auth/dist/csw-ng-auth.js"></script>
+        <script src="../bower_components/angular-ui-router/release/angular-ui-router.js"></script>
         <script src="../bower_components/angular-mocks/angular-mocks.js"></script>
         <!-- endbower -->
         <!-- endbuild -->
@@ -64,15 +67,15 @@
                                 <span class="icon-bar"></span>
                                 <span class="icon-bar"></span>
                             </button>
-                            <a class="navbar-brand" href="#">BookBasico</a>
+                            <a class="navbar-brand" href>BookBasico</a>
                         </div>
 
                         <!-- Collect the nav links, forms, and other content for toggling -->
                         <div class="collapse navbar-collapse" id="main-bar">
                             <ul class="nav navbar-nav">
-                                <li><a href="#/book">Book</a></li>
-                                <li><a href="#/author">Author</a></li>
-                                <li><a href="#/editorial">Editorial</a></li>
+                                <li><a ui-sref="book">Book</a></li>
+                                <li><a ui-sref="author">Author</a></li>
+                                <li><a ui-sref="editorial">Editorial</a></li>
                             </ul>
                             <ul class="nav navbar-nav navbar-right">
                                 <li>
@@ -83,7 +86,7 @@
                     </div> <!-- /.container-fluid -->
                 </nav>
             </div>
-            <div ng-view></div>
+            <div ui-view></div>
         </div>
     </body>
 </html>
