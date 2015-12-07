@@ -5,27 +5,30 @@
         "bookModule",
         "authorModule",
         "editorialModule",
-        "ngRoute"
+        "ui.router"
     ]);
 
-    mainApp.config(["$routeProvider", function ($routeProvider) {
-            $routeProvider
-                    .when("/book", {
+    mainApp.config(['$stateProvider', '$urlRouterProvider', function ($stateProvider, $urlRouterProvider) {
+            $urlRouterProvider.otherwise("/book");
+            $stateProvider
+                    .state('book', {
+                        url: '/book',
                         templateUrl: "src/modules/book/book.tpl.html",
                         controller: "bookCtrl",
                         controllerAs: "ctrl"
                     })
-                    .when("/author", {
+                    .state('author', {
+                        url: '/author',
                         templateUrl: "src/modules/author/author.tpl.html",
                         controller: "authorCtrl",
                         controllerAs: "ctrl"
                     })
-                    .when("/editorial", {
+                    .state('editorial', {
+                        url: '/editorial',
                         templateUrl: "src/modules/editorial/editorial.tpl.html",
                         controller: "editorialCtrl",
                         controllerAs: "ctrl"
-                    })
-                    .otherwise("/book");
+                    });
         }]);
     mainApp.config(["authServiceProvider", function (auth) {
             auth.setValues({
@@ -39,5 +42,12 @@
                 logoutURL: "logout",
                 nameCookie: "userCookie"
             });
+            //Registro de menus personalizados
+            auth.setRoles({'user': [{id: 'registeredUsers', label: 'user', icon: 'list-alt', url: '#/author'}, {id: 'indexBook', label: 'book', icon: 'list-alt', url: '#/book'}],
+                'provider': [{id: 'registeredProviders', label: 'provider', icon: 'inbox', url: '#/editorial'}]});
         }]);
+
+    mainApp.config(['$logProvider', function ($logProvider) {
+        $logProvider.debugEnabled(true);
+    }]);
 })(window.angular);
