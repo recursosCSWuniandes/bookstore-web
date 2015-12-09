@@ -33,12 +33,12 @@
                     </div>
                 </div>
                 <div class="caption" >
-                    <p><strong>Name:</strong> {{record.name}}</p>
-                    <p><strong>Description:</strong> {{record.description}}</p>
-                    <p><strong>ISBN:</strong> {{record.isbn}}</p>
-                    <p><strong>Editorial:</strong> {{record.editorial.name}}</p>
-                    <p><strong>Publish Date:</strong> {{record.publishDate | date}}</p>
-                    <p><strong>Authors: </strong><span ng-repeat="author in record.authors">{{author.name}}{{$last?'':', '}}</span></p>
+                    <p><strong>Name:</strong> <span id="{{$index}}-name">{{record.name}}</span></p>
+                    <p><strong>Description:</strong> <span id="{{$index}}-description">{{record.description}}</span></p>
+                    <p><strong>ISBN:</strong> <span id="{{$index}}-isbn">{{record.isbn}}</span></p>
+                    <p><strong>Editorial:</strong> <span id="{{$index}}-editorial">{{record.editorial.name}}</span></p>
+                    <p><strong>Publish Date:</strong> <span id="{{$index}}-publishDate">{{record.publishDate | date}}</span></p>
+                    <p><strong>Authors: </strong><span id="{{$index}}-authors" ng-repeat="author in record.authors">{{author.name}}{{$last?'':', '}}</span></p>
                 </div>
                 <p class="text-center">
                     <button id="{{$index}}-edit-btn" class="btn btn-default btn-sm" ng-click="ctrl.editRecord(record)"><span class="glyphicon glyphicon-edit"></span> Edit</button>

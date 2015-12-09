@@ -130,10 +130,10 @@ describe('Book Store E2E Testing', function () {
     });
     
     it('should read one book', function () {
-        expect(element.all(by.cssContainingText('.ng-binding', 'Name: DaVinci')).count()).toEqual(1);
-        expect(element.all(by.cssContainingText('.ng-binding', 'Description: Codigo DaVinci')).count()).toEqual(1);
-        expect(element.all(by.cssContainingText('.ng-binding', 'ISBN: Book ISBN')).count()).toEqual(1);
-        expect(element.all(by.cssContainingText('.ng-binding', 'Editorial: Planeta')).count()).toEqual(1);
+        expect(element(by.id('0-name')).getText()).toBe("DaVinci");
+        expect(element(by.id('0-description')).getText()).toBe("Codigo DaVinci");
+        expect(element(by.id('0-isbn')).getText()).toBe("Book ISBN");
+        expect(element(by.id('0-editorial')).getText()).toBe("Planeta");
     });
     
     it('should edit one book', function () {
@@ -143,13 +143,13 @@ describe('Book Store E2E Testing', function () {
         element(by.id('isbn')).clear().sendKeys('ANA ISBN');
         element(by.id('save-book')).click();
         
-        expect(element.all(by.cssContainingText('.ng-binding', 'Name: El diario de Ana Frank')).count()).toEqual(1);
-        expect(element.all(by.cssContainingText('.ng-binding', 'Description: La vida de Ana Frank')).count()).toEqual(1);
-        expect(element.all(by.cssContainingText('.ng-binding', 'ISBN: ANA ISBN')).count()).toEqual(1);
+        expect(element(by.id('0-name')).getText()).toBe("El diario de Ana Frank");
+        expect(element(by.id('0-description')).getText()).toBe("La vida de Ana Frank");
+        expect(element(by.id('0-isbn')).getText()).toBe("ANA ISBN");
     });
     
     it('should delete the book', function () {
         element(by.id('0-delete-btn')).click();
-        expect(element.all(by.cssContainingText('.ng-binding', 'El diario de Ana Frank')).count()).toEqual(0);
+        expect(element.all(by.id('0-name')).count()).toEqual(0);
     });
 });

@@ -108,18 +108,18 @@ describe('Book Store E2E Testing', function () {
     });
     
     it('should read one editorial', function () {
-        expect(element.all(by.cssContainingText('.ng-binding', 'DaVinci')).count()).toEqual(1);
+        expect(element(by.id('0-name')).getText()).toBe("DaVinci");
     });
     
     it('should edit one editorial', function () {
         element(by.id('0-edit-btn')).click();
         element(by.id('name')).clear().sendKeys('Planeta');
         element(by.id('save-editorial')).click();
-        expect(element.all(by.cssContainingText('.ng-binding', 'Planeta')).count()).toEqual(1);
+        expect(element(by.id('0-name')).getText()).toBe("Planeta");
     });
     
     it('should delete the editorial', function () {
         element(by.id('0-delete-btn')).click();
-        expect(element.all(by.cssContainingText('.ng-binding', 'Planeta')).count()).toEqual(0);
+        expect(element.all(by.id('0-name')).count()).toEqual(0);
     });
 });
