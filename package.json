@@ -1,6 +1,6 @@
 {
   "name": "bookstore-web",
-  "version": "0.0.1",
+  "version": "0.1.0",
   "description": "BookStore Frontend",
   "main": "index.html",
   "devDependencies": {
@@ -18,7 +18,7 @@
     "grunt-filerev": "^2.1.2",
     "grunt-include-source": "*",
     "grunt-jscs": "^2.3.0",
-    "grunt-protractor-runner": "2.1.0",
+    "grunt-protractor-runner": "^2.1.0",
     "grunt-sonar-runner": "^2.4.4",
     "grunt-usemin": "^3.1.1",
     "grunt-wiredep": "^2.0.0",
@@ -27,11 +27,12 @@
     "time-grunt": "^1.0.0"
   },
   "engines": {
-    "node": ">=0.12.7"
+    "node": "^0.12.7",
+    "npm": "^3.0.0"
   },
   "scripts": {
     "test": "grunt test",
-    "install": "node node_modules/grunt-protractor-runner/node_modules/protractor/bin/webdriver-manager update"
+    "install": "node node_modules/protractor/bin/webdriver-manager update"
   },
   "repository": {
     "type": "git",
