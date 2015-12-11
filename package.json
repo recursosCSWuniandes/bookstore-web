@@ -16,7 +16,7 @@
     "grunt-contrib-uglify": "^0.9.1",
     "grunt-contrib-watch": "^0.6.1",
     "grunt-filerev": "^2.1.2",
-    "grunt-include-source": "*",
+    "grunt-include-source": "^0.7.1",
     "grunt-istanbul": "^0.6.1",
     "grunt-jscs": "^2.3.0",
     "grunt-protractor-coverage": "^0.2.15",
@@ -25,7 +25,7 @@
     "grunt-wiredep": "^2.0.0",
     "jit-grunt": "^0.9.1",
     "jshint-stylish": "^2.1.0",
-    "protractor": "^3.0.0",
+    "protractor": "^2.0.0",
     "time-grunt": "^1.0.0"
   },
   "engines": {

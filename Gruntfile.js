@@ -13,11 +13,12 @@ module.exports = function (grunt) {
     });
 
     var appConfig = {
-        src: 'public_html',
+        src: 'app',
         tmp: '.tmp',
         dist: 'dist',
         instrumented: 'instrumented',
-        bower: 'bower_components',
+        test: 'test',
+        e2e: 'e2e',
         includeJsFiles: [
             'src/app.js',
             'src/**/*.mod.js',
@@ -168,14 +169,10 @@ module.exports = function (grunt) {
             },
             js: {
                 files: ['<%= meta.src %>/**/*.js'],
-                tasks: ['newer:jshint:all'],
+                tasks: ['build'],
                 options: {
                     livereload: '<%= connect.options.livereload %>'
                 }
-            },
-            jsTest: {
-                files: ['test/spec/{,*/}*.js'],
-                tasks: ['newer:jshint:test', 'karma']
             },
             gruntfile: {
                 files: ['Gruntfile.js']
@@ -280,7 +277,7 @@ module.exports = function (grunt) {
             },
             test: {
                 options: {
-                    configFile: "test/e2e.conf.js"
+                    configFile: "e2e/e2e.conf.js"
                 }
             }
         },
@@ -355,7 +352,7 @@ module.exports = function (grunt) {
 
     grunt.registerTask('run', ['build', 'connect:dist:keepalive']);
 
-    grunt.registerTask('rundev', [
+    grunt.registerTask('debug', [
         'jshint',
         'jscs',
         'clean:server',
