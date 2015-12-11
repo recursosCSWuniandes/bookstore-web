@@ -1,6 +1,6 @@
 {
   "name": "bookstore-web",
-  "version": "0.0.1",
+  "version": "0.1.0",
   "description": "BookStore Frontend",
   "main": "index.html",
   "devDependencies": {
@@ -29,7 +29,8 @@
     "time-grunt": "^1.0.0"
   },
   "engines": {
-    "node": ">=0.12.7"
+    "node": "^0.12.7",
+    "npm": "^3.0.0"
   },
   "scripts": {
     "test": "grunt test",

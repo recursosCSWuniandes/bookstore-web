@@ -109,18 +109,18 @@ describe('Book Store E2E Testing', function () {
     });
     
     it('should read one author', function () {
-        expect(element.all(by.cssContainingText('.ng-binding', 'Nicolas Garcia')).count()).toEqual(1);
+        expect(element(by.id('0-name')).getText()).toBe("Nicolas Garcia");
     });
     
     it('should edit one author', function () {
         element(by.id('0-edit-btn')).click();
         element(by.id('name')).clear().sendKeys('Daniela Garcia');
         element(by.id('save-author')).click();
-        expect(element.all(by.cssContainingText('.ng-binding', 'Daniela Garcia')).count()).toEqual(1);
+        expect(element(by.id('0-name')).getText()).toBe("Daniela Garcia");
     });
     
     it('should delete the author', function () {
         element(by.id('0-delete-btn')).click();
-        expect(element.all(by.cssContainingText('.ng-binding', 'Daniela Garcia')).count()).toEqual(0);
+        expect(element.all(by.id('0-name')).count()).toEqual(0);
     });
 });
