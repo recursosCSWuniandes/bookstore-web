@@ -1,7 +1,7 @@
 exports.config = {
     allScriptsTimeout: 11000,
     specs: [
-        'test/e2e/*.js'
+        'e2e/specs/*.js'
     ],
     capabilities: {
         'browserName': 'firefox'
