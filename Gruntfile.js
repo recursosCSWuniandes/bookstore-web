@@ -7,7 +7,8 @@ module.exports = function (grunt) {
     require('jit-grunt')(grunt, {
         useminPrepare: 'grunt-usemin',
         ngtemplates: 'grunt-angular-templates',
-        protractor: 'grunt-protractor-runner',
+        protractor_coverage: 'grunt-protractor-coverage',
+        instrument: 'grunt-istanbul',
         sonarRunner: 'grunt-sonar-runner'
     });
 
@@ -15,6 +16,7 @@ module.exports = function (grunt) {
         src: 'public_html',
         tmp: '.tmp',
         dist: 'dist',
+        instrumented: 'instrumented',
         bower: 'bower_components',
         includeJsFiles: [
             'src/app.js',
@@ -45,6 +47,16 @@ module.exports = function (grunt) {
         },
         // Copies remaining files to places other tasks can use
         copy: {
+            coverageE2E: {
+                files: [{
+                        expand: true,
+                        dot: true,
+                        dest: '<%= meta.instrumented %>',
+                        src: [
+                            '<%= meta.src %>/**/*'
+                        ]
+                    }]
+            },
             dist: {
                 files: [{
                         expand: true,
@@ -210,13 +222,13 @@ module.exports = function (grunt) {
                     port: 9001,
                     middleware: function (connect) {
                         return [
-                            connect.static(appConfig.tmp),
+                            connect.static(appConfig.instrumented),
                             connect.static('test'),
                             connect().use(
                                     '/bower_components',
                                     connect.static('./bower_components')
                                     ),
-                            connect.static(appConfig.src)
+                            connect.static(appConfig.instrumented + '/' + appConfig.src)
                         ];
                     }
                 }
@@ -255,11 +267,29 @@ module.exports = function (grunt) {
                     }]
             }
         },
-        protractor: {
+        instrument: {
+            files: '<%= meta.src %>/src/**/*.js',
+            options: {
+                lazy: false,
+                basePath: "<%= meta.instrumented %>"
+            }
+        },
+        protractor_coverage: {
+            options: {
+                coverageDir: "<%= meta.instrumented %>"
+            },
             test: {
                 options: {
                     configFile: "test/e2e.conf.js"
                 }
+            }
+        },
+        makeReport: {
+            src: '<%= meta.instrumented %>/*.json',
+            options: {
+                type: 'lcov',
+                dir: 'reports/',
+                print: 'detail'
             }
         },
         sonarRunner: {
@@ -273,8 +303,14 @@ module.exports = function (grunt) {
                         projectName: '<%= pkg.description %>',
                         projectVersion: '<%= pkg.version %>',
                         sources: '<%= meta.src %>',
-                        sourceEncoding: 'UTF-8'
+                        sourceEncoding: 'UTF-8',
+                        javascript: {
+                            lcov: {
+                                itReportPath: 'reports/lcov.info'
+                            }
+                        }
                     }
+
                 }
             }
         },
@@ -353,9 +389,11 @@ module.exports = function (grunt) {
         'clean:server',
         'wiredep:test',
         'includeSource',
-        'copy:styles',
+        'copy:coverageE2E',
+        'instrument',
         'connect:test',
-        'protractor'
+        'protractor_coverage',
+        'makeReport'
     ]);
 
     grunt.registerTask('default', ['test', 'build']);

@@ -17,13 +17,15 @@
     "grunt-contrib-watch": "^0.6.1",
     "grunt-filerev": "^2.1.2",
     "grunt-include-source": "*",
+    "grunt-istanbul": "^0.6.1",
     "grunt-jscs": "^2.3.0",
-    "grunt-protractor-runner": "*",
+    "grunt-protractor-coverage": "^0.2.15",
     "grunt-sonar-runner": "^2.4.4",
     "grunt-usemin": "^3.1.1",
     "grunt-wiredep": "^2.0.0",
     "jit-grunt": "^0.9.1",
     "jshint-stylish": "^2.1.0",
+    "protractor": "^3.0.0",
     "time-grunt": "^1.0.0"
   },
   "engines": {
@@ -31,7 +33,7 @@
   },
   "scripts": {
     "test": "grunt test",
-    "install": "node node_modules/grunt-protractor-runner/node_modules/protractor/bin/webdriver-manager update"
+    "install": "node node_modules/protractor/bin/webdriver-manager update"
   },
   "repository": {
     "type": "git",

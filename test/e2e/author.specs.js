@@ -1,6 +1,7 @@
 describe('Book Store E2E Testing', function () {
 
     beforeEach(function () {
+        browser.driver.manage().window().maximize();
         browser.addMockModule('ngCrudMock', function () {
             var mod = angular.module('ngCrudMock', ['ngMockE2E']);
 
