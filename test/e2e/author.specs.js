@@ -1,4 +1,6 @@
 describe('Book Store E2E Testing', function () {
+    
+    var nameVarTest = 'Val' + Math.floor(Math.random() * 10000);
 
     beforeEach(function () {
         browser.addMockModule('ngCrudMock', function () {
@@ -102,20 +104,20 @@ describe('Book Store E2E Testing', function () {
     it('should create one author', function () {
         browser.get('#/author');
         element(by.id('create-author')).click();
-        element(by.id('name')).sendKeys('Nicolas Garcia');
+        element(by.id('name')).sendKeys(nameVarTest);
         element(by.id('save-author')).click();
         expect(element.all(by.repeater('record in records')).count()).toEqual(1);
     });
     
     it('should read one author', function () {
-        expect(element(by.id('0-name')).getText()).toBe("Nicolas Garcia");
+        expect(element(by.id('0-name')).getText()).toBe(nameVarTest);
     });
     
     it('should edit one author', function () {
         element(by.id('0-edit-btn')).click();
-        element(by.id('name')).clear().sendKeys('Daniela Garcia');
+        element(by.id('name')).clear().sendKeys('New' + nameVarTest);
         element(by.id('save-author')).click();
-        expect(element(by.id('0-name')).getText()).toBe("Daniela Garcia");
+        expect(element(by.id('0-name')).getText()).toBe('New' + nameVarTest);
     });
     
     it('should delete the author', function () {

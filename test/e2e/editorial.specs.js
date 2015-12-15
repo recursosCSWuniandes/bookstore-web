@@ -1,4 +1,6 @@
 describe('Book Store E2E Testing', function () {
+    
+    var nameVarTest = 'Val' + Math.floor(Math.random() * 10000);
 
     beforeEach(function () {
         browser.addMockModule('ngCrudMock', function () {
@@ -102,20 +104,20 @@ describe('Book Store E2E Testing', function () {
     it('should create one editorial', function () {
         browser.get('#/editorial');
         element(by.id('create-editorial')).click();
-        element(by.id('name')).sendKeys('DaVinci');
+        element(by.id('name')).sendKeys(nameVarTest);
         element(by.id('save-editorial')).click();
         expect(element.all(by.repeater('record in records')).count()).toEqual(1);
     });
     
     it('should read one editorial', function () {
-        expect(element(by.id('0-name')).getText()).toBe("DaVinci");
+        expect(element(by.id('0-name')).getText()).toBe(nameVarTest);
     });
     
     it('should edit one editorial', function () {
         element(by.id('0-edit-btn')).click();
-        element(by.id('name')).clear().sendKeys('Planeta');
+        element(by.id('name')).clear().sendKeys('New' + nameVarTest);
         element(by.id('save-editorial')).click();
-        expect(element(by.id('0-name')).getText()).toBe("Planeta");
+        expect(element(by.id('0-name')).getText()).toBe('New' + nameVarTest);
     });
     
     it('should delete the editorial', function () {

@@ -1,5 +1,10 @@
 describe('Book Store E2E Testing', function () {
     
+    var nameVarTest = 'Val' + Math.floor(Math.random() * 10000);
+    var descriptionVarTest = 'Val' + Math.floor(Math.random() * 10000);
+    var isbnVarTest = 'Val' + Math.floor(Math.random() * 10000);
+    var imageVarTest = 'Val' + Math.floor(Math.random() * 10000);
+    
     beforeEach(function () {
         browser.addMockModule('ngCrudMock', function () {
             var mod = angular.module('ngCrudMock', ['ngMockE2E']);
@@ -117,35 +122,32 @@ describe('Book Store E2E Testing', function () {
     it('should create one book', function () {
         browser.get('#/book');
         element(by.id('create-book')).click();
-        element(by.id('name')).sendKeys('DaVinci');
-        element(by.id('description')).sendKeys('Codigo DaVinci');
-        element(by.id('isbn')).sendKeys('Book ISBN');
-        element(by.id('imageurl')).sendKeys('http://www.librosyliteratura.es/wp-content/uploads/2013/06/El-Codigo-Da-Vinci.jpg');
-        
-        var select = element(by.id('editorial'));
-        select.$('[value="100"]').click();
-        
+        element(by.id('name')).sendKeys(nameVarTest);
+        element(by.id('description')).sendKeys(descriptionVarTest);
+        element(by.id('isbn')).sendKeys(isbnVarTest);
+        element(by.id('imageurl')).sendKeys(imageVarTest);
+        element(by.id('editorial')).all(by.css('option')).last().click();
         element(by.id('save-book')).click();
         expect(element.all(by.repeater('record in records')).count()).toEqual(1);
     });
     
     it('should read one book', function () {
-        expect(element(by.id('0-name')).getText()).toBe("DaVinci");
-        expect(element(by.id('0-description')).getText()).toBe("Codigo DaVinci");
-        expect(element(by.id('0-isbn')).getText()).toBe("Book ISBN");
+        expect(element(by.id('0-name')).getText()).toBe(nameVarTest);
+        expect(element(by.id('0-description')).getText()).toBe(descriptionVarTest);
+        expect(element(by.id('0-isbn')).getText()).toBe(isbnVarTest);
         expect(element(by.id('0-editorial')).getText()).toBe("Planeta");
     });
     
     it('should edit one book', function () {
         element(by.id('0-edit-btn')).click();
-        element(by.id('name')).clear().sendKeys('El diario de Ana Frank');
-        element(by.id('description')).clear().sendKeys('La vida de Ana Frank');
-        element(by.id('isbn')).clear().sendKeys('ANA ISBN');
+        element(by.id('name')).clear().sendKeys('New' + nameVarTest);
+        element(by.id('description')).clear().sendKeys('New' + descriptionVarTest);
+        element(by.id('isbn')).clear().sendKeys('New' + isbnVarTest);
         element(by.id('save-book')).click();
         
-        expect(element(by.id('0-name')).getText()).toBe("El diario de Ana Frank");
-        expect(element(by.id('0-description')).getText()).toBe("La vida de Ana Frank");
-        expect(element(by.id('0-isbn')).getText()).toBe("ANA ISBN");
+        expect(element(by.id('0-name')).getText()).toBe('New' + nameVarTest);
+        expect(element(by.id('0-description')).getText()).toBe('New' + descriptionVarTest);
+        expect(element(by.id('0-isbn')).getText()).toBe('New' + isbnVarTest);
     });
     
     it('should delete the book', function () {
