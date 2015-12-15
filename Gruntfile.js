@@ -220,7 +220,7 @@ module.exports = function (grunt) {
                     middleware: function (connect) {
                         return [
                             connect.static(appConfig.instrumented),
-                            connect.static('test'),
+                            connect.static(appConfig.e2e),
                             connect().use(
                                     '/bower_components',
                                     connect.static('./bower_components')
