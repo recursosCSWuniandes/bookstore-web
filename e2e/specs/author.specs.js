@@ -3,6 +3,7 @@ describe('Book Store E2E Testing', function () {
     var nameVarTest = 'Val' + Math.floor(Math.random() * 10000);
 
     beforeEach(function () {
+        browser.driver.manage().window().maximize();
         browser.addMockModule('ngCrudMock', function () {
             var mod = angular.module('ngCrudMock', ['ngMockE2E']);
 
