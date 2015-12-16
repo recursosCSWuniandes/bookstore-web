@@ -153,6 +153,11 @@
             modal.result.then(function (data) {
                 svc.replaceAuthors(book.id, data).then(function () {
                     self.showSuccess("Autores actualizados");
+
+                    svc.getAuthors(book.id).then(function (response) {
+                        book.authors = response.data;
+                    }, responseError);
+
                 }, responseError);
             });
         };
